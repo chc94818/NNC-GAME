@@ -4,9 +4,9 @@ using System.Collections;
 public class Control : MonoBehaviour {
     private Rigidbody2D rigi;
     private Animator anim;
-    public float speed = 400;
+    public float speed = 350;
     public float jumpForce = 700;
-    public float flyForce = 500; 
+    public float flyForce = 300; 
     public bool isGround = true;
 
     //初始化
