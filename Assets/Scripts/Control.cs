@@ -122,22 +122,24 @@ public class Control : MonoBehaviour {
     //啄擊
     void Peck(bool isPeck)
     {
-        rigi.velocity = new Vector2(0, rigi.velocity.y);
         anim.SetBool("isPeck", isPeck);
-    }
-
-    //抓擊
-    void Claw(bool isClaw)
-    {
-        anim.SetBool("isClaw", isClaw);
         if (!isGround)
         {
             return;
-        }else
+        }
+        rigi.velocity = new Vector2(0, rigi.velocity.y);
+
+    }
+        //抓擊
+        void Claw(bool isClaw)
+    {
+        anim.SetBool("isClaw", isClaw);
+        if (!isGround||rigi.velocity.y < -0.07f)
         {
+            return;
+        }
             rigi.velocity = new Vector2(rigi.velocity.x, clawJumpForce * Time.deltaTime);
 
-        }
        
     }
     //碰撞
