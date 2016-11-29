@@ -107,6 +107,7 @@ public class Control : MonoBehaviour {
         if (other.gameObject.tag == "Ground")
         {
             isGround = true;
+            rigi.velocity = new Vector2(0,rigi.velocity.y);
         }
     }
 
