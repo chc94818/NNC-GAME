@@ -4,8 +4,9 @@ using System.Collections;
 public class Control : MonoBehaviour {
     private Rigidbody2D rigi;
     private Animator anim;
-    public float speed = 200.0f;
-    public float jumpForce = 200.0f;
+    public float speed = 400;
+    public float jumpForce = 700;
+    public float flyForce = 500; 
     public bool isGround = true;
 
     //初始化
@@ -39,6 +40,16 @@ public class Control : MonoBehaviour {
         {
             Jump();
         }
+
+        if (Input.GetKey(KeyCode.Z))
+        {
+            Fly(true);
+        }
+         if (Input.GetKeyUp(KeyCode.Z))
+        {
+            Fly(false);
+        }
+        
         StateMachine();
     }
     //動畫狀態機
@@ -46,6 +57,7 @@ public class Control : MonoBehaviour {
     {
         anim.SetBool("Ground", isGround);
         anim.SetFloat("Velocity_Y", rigi.velocity.y);
+
     }
 
     //面對方向
@@ -71,7 +83,15 @@ public class Control : MonoBehaviour {
         rigi.velocity = new Vector2(rigi.velocity.x, jumpForce * Time.deltaTime);
         anim.SetTrigger("Jump");
     }
-       
+
+    void Fly(bool isFlying)
+    {
+        rigi.velocity = new Vector2(rigi.velocity.x, flyForce * Time.deltaTime);
+
+        anim.SetBool("isFlying", isFlying);
+    }
+
+    
     //碰撞
     /*
     void OnCollisionEnter2D(Collision2D other)
