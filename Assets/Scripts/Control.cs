@@ -6,7 +6,8 @@ public class Control : MonoBehaviour {
     private Animator anim;
     public float speed = 350;
     public float jumpForce = 700;
-    public float flyForce = 300; 
+    public float flyForce = 300;
+    public float clawJumpForce = 350;
     public bool isGround = true;
 
     //初始化
@@ -21,6 +22,7 @@ public class Control : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        //左右移動--------------------------------------------------------------------------
         if (Input.GetKey(KeyCode.RightArrow))
         {
             Move(1);
@@ -31,16 +33,21 @@ public class Control : MonoBehaviour {
             Move(-1);
             Direction(1);
         }
-
+        //-----------------------------------------------------------------------------------
+        //停止移動--------------------------------------------------------------------------
         if (Input.GetKeyUp(KeyCode.LeftArrow)|| Input.GetKeyUp(KeyCode.RightArrow))
         {
             Move(0);
         }
+        //-----------------------------------------------------------------------------------
+
+        //跳躍------------------------------------------------------------------------------
         if (Input.GetKeyDown(KeyCode.UpArrow))
         {
             Jump();
         }
-
+        //-----------------------------------------------------------------------------------
+        //飛行-------------------------------------------------------------------------------
         if (Input.GetKey(KeyCode.Z))
         {
             Fly(true);
@@ -49,7 +56,27 @@ public class Control : MonoBehaviour {
         {
             Fly(false);
         }
-        
+        //-----------------------------------------------------------------------------------
+        //啄擊-------------------------------------------------------------------------------
+        if (Input.GetKey(KeyCode.X))
+        {
+            Peck(true);
+        }
+        if (Input.GetKeyUp(KeyCode.X))
+        {
+            Peck(false);
+        }
+        //-----------------------------------------------------------------------------------
+        //抓擊-------------------------------------------------------------------------------
+        if (Input.GetKey(KeyCode.C))
+        {
+            Claw(true);
+        }
+        if (Input.GetKeyUp(KeyCode.C))
+        {
+            Claw(false);
+        }
+        //-----------------------------------------------------------------------------------
         StateMachine();
     }
     //動畫狀態機
@@ -84,6 +111,7 @@ public class Control : MonoBehaviour {
         anim.SetTrigger("Jump");
     }
 
+    //飛行
     void Fly(bool isFlying)
     {
         rigi.velocity = new Vector2(rigi.velocity.x, flyForce * Time.deltaTime);
@@ -91,7 +119,27 @@ public class Control : MonoBehaviour {
         anim.SetBool("isFlying", isFlying);
     }
 
-    
+    //啄擊
+    void Peck(bool isPeck)
+    {
+        rigi.velocity = new Vector2(0, rigi.velocity.y);
+        anim.SetBool("isPeck", isPeck);
+    }
+
+    //抓擊
+    void Claw(bool isClaw)
+    {
+        anim.SetBool("isClaw", isClaw);
+        if (!isGround)
+        {
+            return;
+        }else
+        {
+            rigi.velocity = new Vector2(rigi.velocity.x, clawJumpForce * Time.deltaTime);
+
+        }
+       
+    }
     //碰撞
     /*
     void OnCollisionEnter2D(Collision2D other)
